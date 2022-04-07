@@ -1,5 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  NavLink,
+} from "react-router-dom";
 import Header from "./components/Header";
 import { useState } from "react";
 import FeedbackData from "./data/FeedbackData";
@@ -41,14 +46,21 @@ function App() {
                   feedbacks={feedbacks}
                   handleDelete={deleteFeedback}
                 />
+                <AboutIconLink />
               </>
             }
           />
 
           {/* <Route path="/about">This is the about route</Route> */}
-          <Route path="/about" element={<AboutPage />} />
+          <Route
+            path="/about"
+            element={
+              <>
+                <AboutPage />
+              </>
+            }
+          />
         </Routes>
-        <AboutIconLink />
       </div>
     </Router>
   );
