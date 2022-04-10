@@ -3,15 +3,18 @@ import { useContext } from "react";
 import FeedbackContext from "../context/FeedbackContext";
 
 import FeedbackCard from "./FeedbackCard";
+import Spinner from "./shared/Spinner";
 
 const FeedbackCards = () => {
-  const { feedbacks } = useContext(FeedbackContext);
+  const { feedbacks, isLoading } = useContext(FeedbackContext);
 
-  if (!feedbacks || feedbacks.length === 0) {
+  if (!isLoading && (!feedbacks || feedbacks.length === 0)) {
     return <p>No feedback yet!</p>;
   }
 
-  return (
+  return isLoading ? (
+    <Spinner />
+  ) : (
     <div className="cards">
       <AnimatePresence>
         {feedbacks.map((feedback) => (
@@ -26,18 +29,18 @@ const FeedbackCards = () => {
         ))}
       </AnimatePresence>
     </div>
-
-    //NO motion version:
-    // <div className="cards">
-    //   {feedbacks.map((feedback) => (
-    //     <FeedbackCard
-    //       key={feedback.id}
-    //       feedback={feedback}
-    //       handleDelete={handleDelete}
-    //     />
-    //   ))}
-    // </div>
   );
+
+  //NO motion version:
+  // <div className="cards">
+  //   {feedbacks.map((feedback) => (
+  //     <FeedbackCard
+  //       key={feedback.id}
+  //       feedback={feedback}
+  //       handleDelete={handleDelete}
+  //     />
+  //   ))}
+  // </div>
 };
 
 export default FeedbackCards;
