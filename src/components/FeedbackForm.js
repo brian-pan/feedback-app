@@ -1,20 +1,32 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import Card from "./shared/Card";
 import Button from "./shared/Button";
 import RatingSelect from "./RatingSelect";
+import FeedbackContext from "../context/FeedbackContext";
 
-function FeedbackForm({ handleAdd }) {
+function FeedbackForm() {
   const [rating, setRating] = useState(3);
   const [text, setText] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
   const [message, setMessage] = useState("");
 
+  const { addFeedback, feedbacksEdit, updateFeedback } =
+    useContext(FeedbackContext);
+
+  useEffect(() => {
+    if (feedbacksEdit.edit === true) {
+      setIsDisabled(false);
+      setText(feedbacksEdit.item.text);
+      setRating(feedbacksEdit.item.rating);
+    }
+  }, [feedbacksEdit]);
+
   const handleChange = (event) => {
-    //want the validations run while typing
-    if (text === "") {
+    // want the validations run while typing
+    if (event.target.value === "") {
       setIsDisabled(true);
       setMessage(null);
-    } else if (text !== "" && text.trim().length < 10) {
+    } else if (event.target.value.trim().length < 10) {
       setIsDisabled(true);
       setMessage("Review must contain at least 10 characters.");
     } else {
@@ -31,7 +43,12 @@ function FeedbackForm({ handleAdd }) {
         text,
         rating,
       };
-      handleAdd(newFeedback);
+
+      if (feedbacksEdit.edit === true) {
+        updateFeedback(feedbacksEdit.item.id, newFeedback);
+      } else {
+        addFeedback(newFeedback);
+      }
 
       setText("");
     }

@@ -1,8 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
-import PropTypes from "prop-types";
+import { useContext } from "react";
+import FeedbackContext from "../context/FeedbackContext";
+
 import FeedbackCard from "./FeedbackCard";
 
-const FeedbackCards = ({ feedbacks, handleDelete }) => {
+const FeedbackCards = () => {
+  const { feedbacks } = useContext(FeedbackContext);
+
   if (!feedbacks || feedbacks.length === 0) {
     return <p>No feedback yet!</p>;
   }
@@ -17,11 +21,7 @@ const FeedbackCards = ({ feedbacks, handleDelete }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <FeedbackCard
-              key={feedback.id}
-              feedback={feedback}
-              handleDelete={handleDelete}
-            />
+            <FeedbackCard key={feedback.id} feedback={feedback} />
           </motion.div>
         ))}
       </AnimatePresence>
@@ -38,16 +38,6 @@ const FeedbackCards = ({ feedbacks, handleDelete }) => {
     //   ))}
     // </div>
   );
-};
-
-FeedbackCards.propTypes = {
-  feedbacks: PropTypes.array,
-  // can also write:
-  // feedbacks: PropTypes.arrayOf({
-  //   id: PropTypes.number.isRequired,
-  //   text: PropTypes.string.isRequired,
-  //   rating: PropTypes.number.isRequired,
-  // }),
 };
 
 export default FeedbackCards;
